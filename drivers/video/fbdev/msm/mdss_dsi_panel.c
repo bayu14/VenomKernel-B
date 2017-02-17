@@ -23,10 +23,18 @@
 #include <linux/qpnp/pwm.h>
 #include <linux/err.h>
 #include <linux/string.h>
+#include <linux/display_state.h>
 
 #include "mdss_dsi.h"
 #include "mdss_dba_utils.h"
 #include "mdss_debug.h"
+
+bool display_on = true;
+
+bool is_display_on()
+{
+	return display_on;
+}
 
 #ifdef CONFIG_POWERSUSPEND
 #include <linux/powersuspend.h>
