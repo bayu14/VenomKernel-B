@@ -66,5 +66,18 @@ static inline const void *kasan_shadow_to_mem(const void *shadow_addr)
 
 void kasan_report(unsigned long addr, size_t size,
 		bool is_write, unsigned long ip);
+void kasan_report_double_free(struct kmem_cache *cache, void *object,
+					void *ip);
+
+#if defined(CONFIG_SLAB) || defined(CONFIG_SLUB)
+void quarantine_put(struct kasan_free_meta *info, struct kmem_cache *cache);
+void quarantine_reduce(void);
+void quarantine_remove_cache(struct kmem_cache *cache);
+#else
+static inline void quarantine_put(struct kasan_free_meta *info,
+				struct kmem_cache *cache) { }
+static inline void quarantine_reduce(void) { }
+static inline void quarantine_remove_cache(struct kmem_cache *cache) { }
+#endif
 
 #endif

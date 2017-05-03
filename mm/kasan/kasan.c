@@ -477,7 +477,33 @@ void kasan_slab_free(struct kmem_cache *cache, void *object)
 	kasan_poison_shadow(object, rounded_up_size, KASAN_KMALLOC_FREE);
 }
 
-void kasan_kmalloc(struct kmem_cache *cache, const void *object, size_t size)
+bool kasan_slab_free(struct kmem_cache *cache, void *object)
+{
+	s8 shadow_byte;
+
+	/* RCU slabs could be legally used after free within the RCU period */
+	if (unlikely(cache->flags & SLAB_DESTROY_BY_RCU))
+		return false;
+
+	shadow_byte = READ_ONCE(*(s8 *)kasan_mem_to_shadow(object));
+	if (shadow_byte < 0 || shadow_byte >= KASAN_SHADOW_SCALE_SIZE) {
+		kasan_report_double_free(cache, object,
+				__builtin_return_address(1));
+		return true;
+	}
+
+	kasan_poison_slab_free(cache, object);
+
+	if (unlikely(!(cache->flags & SLAB_KASAN)))
+		return false;
+
+	set_track(&get_alloc_info(cache, object)->free_track, GFP_NOWAIT);
+	quarantine_put(get_free_info(cache, object), cache);
+	return true;
+}
+
+void kasan_kmalloc(struct kmem_cache *cache, const void *object, size_t size,
+		   gfp_t flags)
 {
 	unsigned long redzone_start;
 	unsigned long redzone_end;
