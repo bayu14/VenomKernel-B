@@ -72,3 +72,4 @@ obj-$(CONFIG_ANT_CHECK)		+= ant_check.o
 subdir-ccflags-y += \
 	-Wno-ignored-attributes \
 	-Wno-header-guard
+obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
