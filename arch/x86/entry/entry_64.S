@@ -718,6 +718,10 @@ apicinterrupt3 \num trace(\sym) smp_trace(\sym)
 .endm
 #endif
 
+/* Make sure APIC interrupt handlers end up in the irqentry section: */
+#define PUSH_SECTION_IRQENTRY	.pushsection .irqentry.text, "ax"
+#define POP_SECTION_IRQENTRY	.popsection
+
 .macro apicinterrupt num sym do_sym
 apicinterrupt3 \num \sym \do_sym
 trace_apicinterrupt \num \sym
