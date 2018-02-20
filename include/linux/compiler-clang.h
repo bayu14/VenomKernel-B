@@ -19,6 +19,13 @@
 #define randomized_struct_fields_start	struct {
 #define randomized_struct_fields_end	};
 
+/*
+ * Clang supports FORTIFY_SOURCE; this needs to override compiler-gcc.h turning it off
+ */
+#ifdef __NO_FORTIFY
+#undef __NO_FORTIFY
+#endif
+
 /* all clang versions usable with the kernel support KASAN ABI version 5 */
 #define KASAN_ABI_VERSION 5
 
