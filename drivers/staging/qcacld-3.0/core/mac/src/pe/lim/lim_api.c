@@ -71,8 +71,6 @@
 #include "cds_concurrency.h"
 #include "nan_datapath.h"
 
-#define NO_SESSION 0xff
-
 static void __lim_init_scan_vars(tpAniSirGlobal pMac)
 {
 	pMac->lim.gLimUseScanModeForLearnMode = 1;
@@ -837,6 +835,11 @@ tSirRetStatus pe_close(tpAniSirGlobal pMac)
 
 	if (ANI_DRIVER_TYPE(pMac) == QDF_DRIVER_TYPE_MFG)
 		return eSIR_SUCCESS;
+
+	if (pMac->lim.limDisassocDeauthCnfReq.pMlmDeauthReq) {
+		qdf_mem_free(pMac->lim.limDisassocDeauthCnfReq.pMlmDeauthReq);
+		pMac->lim.limDisassocDeauthCnfReq.pMlmDeauthReq = NULL;
+	}
 
 	qdf_spinlock_destroy(&pMac->sys.bbt_mgmt_lock);
 	for (i = 0; i < pMac->lim.maxBssId; i++) {
