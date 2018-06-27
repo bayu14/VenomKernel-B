@@ -1,0 +1,6 @@
+menu "CODEC drivers"
+
+config SOUND_CONTROL
+	bool "Sound control for wcd934x"
+
+endmenu
