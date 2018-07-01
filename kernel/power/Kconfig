@@ -321,7 +321,7 @@ config WQ_POWER_EFFICIENT_DEFAULT
 config	BOEFFLA_WL_BLOCKER
 	bool "Boeffla generic wakelock blocker driver"
 	depends on PM
-	default n
+	default y
 
 config PM_GENERIC_DOMAINS_SLEEP
 	def_bool y

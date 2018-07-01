@@ -161,6 +161,11 @@ config CPU_FREQ_DEFAULT_GOV_CULTIVATION
 config CPU_FREQ_DEFAULT_GOV_IMPULSE
 	bool "impulse"
 	select CPU_FREQ_GOV_IMPULSE
+	help
+	  Use the CPUFreq governor 'impulse' as default. This allows
+	  you to get a full dynamic cpu frequency capable system by simply
+	  loading your cpufreq low-level hardware driver, using the
+	  'impulse' governor for latency-sensitive workloads.
 
 config CPU_FREQ_DEFAULT_GOV_CHILL
         bool "chill"
@@ -173,15 +178,6 @@ config CPU_FREQ_DEFAULT_GOV_CHILL
           Be aware that not all cpufreq drivers support the conservative
           governor. If unsure have a look at the help section of the
           driver. Fallback governor will be the interactive governor.
-
-config CPU_FREQ_DEFAULT_GOV_ALUCARD
-	bool "alucard"
-	select CPU_FREQ_GOV_ALUCARD
-	help
-	  Use the CPUFreq governor 'impulse' as default. This allows
-	  you to get a full dynamic cpu frequency capable system by simply
-	  loading your cpufreq low-level hardware driver, using the
-	  'impulse' governor for latency-sensitive workloads.
 
 endchoice
 
