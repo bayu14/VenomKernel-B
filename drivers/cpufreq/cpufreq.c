@@ -663,9 +663,9 @@ static int cpufreq_parse_governor(char *str_governor, unsigned int *policy,
 			 * falling back to interactive before falling out.
 			 */
 			if (ret == 0)
-				t = __find_governor(str_governor);
+				t = find_governor(str_governor);
 			else
-				t = __find_governor("interactive");
+				t = find_governor("interactive");
 		}
 
 		if (t != NULL) {
