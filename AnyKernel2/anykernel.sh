@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() {
-kernel.string=Welcome to the Xprise package!
+kernel.string=Welcome to the Rebirth package!
 do.devicecheck=1
 do.modules=0
 do.cleanup=1
@@ -31,7 +31,7 @@ case "$android_ver" in
 esac;
 ui_print " ";
 ui_print "Running Android $android_ver..."
-ui_print "This kernel is $support_status for this version!";
+ui_print "Rebirth is $support_status for this version!";
 
 ##########################################################################################
 # Ramdisk Changes
@@ -46,7 +46,7 @@ dump_boot;
 
 # Cumming
 ui_print " ";
-ui_print "XpriseKernel is installed in ur whyred! ENJOY!";
+ui_print "Rebirth is installed on your whyred! ENJOY!";
 
 # begin ramdisk changes
 # end ramdisk changes
