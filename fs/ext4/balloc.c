@@ -183,7 +183,7 @@ static int ext4_init_block_bitmap(struct super_block *sb,
 	unsigned int bit, bit_max;
 	struct ext4_sb_info *sbi = EXT4_SB(sb);
 	ext4_fsblk_t start, tmp;
-	struct ext4_group_info *grp;
+	struct ext4_group_info;
 
 	J_ASSERT_BH(bh, buffer_locked(bh));
 
