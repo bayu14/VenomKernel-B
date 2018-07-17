@@ -49,6 +49,3 @@ $(obj)/aes-glue-%.o: $(src)/aes-glue.c FORCE
 
 ccflags-y := -O3
 
-$(obj)/aes-glue-%.o: $(src)/aes-glue.c FORCE
-	$(call if_changed_rule,cc_o_c)
-
