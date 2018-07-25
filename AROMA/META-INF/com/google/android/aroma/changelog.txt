@@ -1,0 +1,8 @@
+<b><#selectbg_g>Codename: Rebirth</#></b>
+<*><b>V1.5</b></*>
+<*> Added AROMA installer support</*>
+<*> Upstreamed to v4.4.144-rc1.</*>
+<*> Overclock to 2.46 GHz.</*>
+<*> Added support for TTL fixation.</*>
+<*> WireGuard supported patch. </*>
+<*> Undervolt by -5mv.</*>
