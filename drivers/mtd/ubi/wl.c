@@ -1835,7 +1835,6 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
 	list_for_each_entry_safe(aeb, tmp, &ai->erase, u.list) {
 		cond_resched();
 
-<<<<<<< HEAD
 		e = kmem_cache_alloc(ubi_wl_entry_slab, GFP_KERNEL);
 		if (!e)
 			goto out_free;
@@ -1847,10 +1846,8 @@ int ubi_wl_init(struct ubi_device *ubi, struct ubi_attach_info *ai)
 		ubi->lookuptbl[e->pnum] = e;
 		if (schedule_erase(ubi, e, aeb->vol_id, aeb->lnum, 0)) {
 			wl_entry_destroy(ubi, e);
-=======
 		err = erase_aeb(ubi, aeb, false);
 		if (err)
->>>>>>> 189cc8cb2eefebfa921f0ea038e3190d48559829
 			goto out_free;
 
 		found_pebs++;
