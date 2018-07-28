@@ -10,10 +10,10 @@
 <*><b>V1.6</b></*>
 <*> Upstreamed to v4.4.145</*>
 <*> Merge tag 'LA.UM.6.2.r2-04800-sdm660.0' into kernel</*>
-<*> DTC 7.0.0-20180726
+<*> DTC 7.0.0-20180726</*>
 <*> Added Sound Control</*>
 <*> Removed Chill gov</*>
 <*> Fixed stuq freq for somes</*>
 <*> Bring back 2.36 GHz</*>
-<*> sdcardfs: Check stacked filesystem depth<*/>
+<*> sdcardfs: Check stacked filesystem depth</*>
 <*> Disable Gentle Fair Sleepers by default</*>

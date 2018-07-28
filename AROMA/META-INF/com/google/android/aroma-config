@@ -5,10 +5,10 @@
 # Initializing Mod Information
 #
 ini_set("rom_name",             "Rebirth Kernel");
-ini_set("rom_version",          "V1.5");
+ini_set("rom_version",          "V1.6");
 ini_set("rom_author",           "Yousef Algadri");
 ini_set("rom_device",           sysprop("ro.product.model"));
-ini_set("rom_date",             "25/07/2018");
+ini_set("rom_date",             "29/07/2018");
 
 ##
 # Show Animated Splash
