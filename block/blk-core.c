@@ -294,7 +294,6 @@ EXPORT_SYMBOL(blk_stop_queue);
 void blk_sync_queue(struct request_queue *q)
 {
 	del_timer_sync(&q->timeout);
-	cancel_work_sync(&q->timeout_work);
 
 	if (q->mq_ops) {
 		struct blk_mq_hw_ctx *hctx;
@@ -669,8 +668,8 @@ int blk_queue_enter(struct request_queue *q, gfp_t gfp)
 			return -EBUSY;
 
 		wait_event(q->mq_freeze_wq,
-				!atomic_read(&q->mq_freeze_depth) ||
-				blk_queue_dying(q));
+			   !atomic_read(&q->mq_freeze_depth) ||
+			   blk_queue_dying(q));
 		if (blk_queue_dying(q))
 			return -ENODEV;
 	}
@@ -719,7 +718,6 @@ struct request_queue *blk_alloc_queue_node(gfp_t gfp_mask, int node_id)
 	setup_timer(&q->backing_dev_info->laptop_mode_wb_timer,
 		    laptop_mode_timer_fn, (unsigned long) q);
 	setup_timer(&q->timeout, blk_rq_timed_out_timer, (unsigned long) q);
-	INIT_WORK(&q->timeout_work, NULL);
 	INIT_LIST_HEAD(&q->queue_head);
 	INIT_LIST_HEAD(&q->timeout_list);
 	INIT_LIST_HEAD(&q->icq_list);
@@ -1778,11 +1776,6 @@ get_rq:
 	rw_flags = bio_data_dir(bio);
 	if (sync)
 		rw_flags |= REQ_SYNC;
-
-	/*
-	 * Add in META/PRIO flags, if set, before we get to the IO scheduler
-	 */
-	rw_flags |= (bio->bi_rw & (REQ_META | REQ_PRIO));
 
 	/*
 	 * Grab a free request. This is might sleep but can not fail.
