@@ -683,7 +683,6 @@ extern int arch_early_irq_init(void);
 /*
  * We want to know which function is an entrypoint of a hardirq or a softirq.
  */
-#define __irq_entry		 __attribute__((__section__(".irqentry.text")))
 #define __softirq_entry  \
 	__attribute__((__section__(".softirqentry.text")))
 
