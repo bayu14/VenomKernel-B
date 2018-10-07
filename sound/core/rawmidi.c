@@ -677,16 +677,13 @@ int snd_rawmidi_output_params(struct snd_rawmidi_substream *substream,
 		runtime->buffer = newbuf;
 		runtime->buffer_size = params->buffer_size;
 		runtime->avail = runtime->buffer_size;
-<<<<<<< HEAD
 		runtime->appl_ptr = runtime->hw_ptr = 0;
 		spin_unlock_irq(&runtime->lock);
 		kfree(oldbuf);
-=======
 		spin_unlock_irqrestore(&runtime->lock, flags);
 		if (oldbuf != newbuf)
 			kfree(oldbuf);
 		mutex_unlock(&runtime->realloc_mutex);
->>>>>>> 301b720866073e742fe14febc975d6d2adec05b3
 	}
 	runtime->avail_min = params->avail_min;
 	substream->active_sensing = !params->no_active_sensing;
