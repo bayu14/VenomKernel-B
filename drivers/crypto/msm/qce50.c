@@ -4271,7 +4271,6 @@ again:
 	return 0;
 }
 
-=======
 static int _qce_aead_ccm_req(void *handle, struct qce_req *q_req)
 {
 	struct qce_device *pce_dev = (struct qce_device *) handle;
