@@ -972,6 +972,11 @@ sg_ioctl(struct file *filp, unsigned int cmd_in, unsigned long arg)
 				return -ENODEV;
 			sfp->low_dma = sdp->device->host->unchecked_isa_dma;
 		}
+		/*
+		 * N.B. This ioctl never worked properly, but failed to
+		 * return an error value. So returning '0' to keep compability
+		 * with legacy applications.
+		 */
 		return 0;
 	case SG_GET_LOW_DMA:
 		return put_user((int) sfp->low_dma, ip);
@@ -1045,6 +1050,7 @@ sg_ioctl(struct file *filp, unsigned int cmd_in, unsigned long arg)
 				return -EBUSY;
 			}
 
+			mutex_lock(&sfp->parentdp->open_rel_lock);
 			sg_remove_scat(sfp, &sfp->reserve);
 			sg_build_reserve(sfp, val);
 			mutex_unlock(&sfp->parentdp->open_rel_lock);
@@ -1097,6 +1103,7 @@ sg_ioctl(struct file *filp, unsigned int cmd_in, unsigned long arg)
 			if (!rinfo)
 				return -ENOMEM;
 			read_lock_irqsave(&sfp->rq_list_lock, iflags);
+<<<<<<< HEAD
 			for (srp = sfp->headrp, val = 0; val < SG_MAX_QUEUE;
 			     ++val, srp = srp ? srp->nextrp : srp) {
 				memset(&rinfo[val], 0, SZ_SG_REQ_INFO);
@@ -1124,6 +1131,9 @@ sg_ioctl(struct file *filp, unsigned int cmd_in, unsigned long arg)
 							srp->header.usr_ptr;
 				}
 			}
+=======
+			sg_fill_request_table(sfp, rinfo);
+>>>>>>> 301b720866073e742fe14febc975d6d2adec05b3
 			read_unlock_irqrestore(&sfp->rq_list_lock, iflags);
 			result = __copy_to_user(p, rinfo,
 						SZ_SG_REQ_INFO * SG_MAX_QUEUE);
@@ -2748,9 +2758,6 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
 			seq_puts(s, srp->done ?
 				 ((1 == srp->done) ?  "rcv:" : "fin:")
 				  : "act:");
-			seq_printf(s, srp->done ?
-				   ((1 == srp->done) ?  "rcv:" : "fin:")
-				   : "act:");
 			seq_printf(s, " id=%d blen=%d",
 				   srp->header.pack_id, blen);
 			if (srp->done)

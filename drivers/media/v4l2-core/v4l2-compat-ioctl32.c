@@ -341,6 +341,13 @@ static int get_v4l2_plane32(struct v4l2_plane __user *up, struct v4l2_plane32 __
 				sizeof(up->reserved)) ||
 		copy_in_user(&up->length, &up32->length,
 				sizeof(__u32)))
+	    copy_in_user(&up->data_offset, &up32->data_offset,
+			 sizeof(up->data_offset)) ||
+	    copy_in_user(up->reserved, up32->reserved,
+			 sizeof(up->reserved)) ||
+	    copy_in_user(&up->length, &up32->length,
+			 sizeof(up->length)))
+>>>>>>> 301b720866073e742fe14febc975d6d2adec05b3
 		return -EFAULT;
 
 	if (memory == V4L2_MEMORY_USERPTR) {
@@ -365,10 +372,17 @@ static int put_v4l2_plane32(struct v4l2_plane __user *up, struct v4l2_plane32 __
 				enum v4l2_memory memory)
 {
 	if (copy_in_user(up32, up, 2 * sizeof(__u32)) ||
+<<<<<<< HEAD
 		copy_in_user(up32->reserved, up->reserved,
 				sizeof(up32->reserved)) ||
 		copy_in_user(&up32->data_offset, &up->data_offset,
 				sizeof(__u32)))
+=======
+	    copy_in_user(up32->reserved, up->reserved,
+			 sizeof(up->reserved)) ||
+	    copy_in_user(&up32->data_offset, &up->data_offset,
+			 sizeof(up->data_offset)))
+>>>>>>> 301b720866073e742fe14febc975d6d2adec05b3
 		return -EFAULT;
 
 	/* For MMAP, driver might've set up the offset, so copy it back.
@@ -382,10 +396,36 @@ static int put_v4l2_plane32(struct v4l2_plane __user *up, struct v4l2_plane32 __
 		if (copy_in_user(&up32->m.fd, &up->m.fd,
 					sizeof(int)))
 			return -EFAULT;
+<<<<<<< HEAD
 	if (memory == V4L2_MEMORY_USERPTR)
 		if (copy_in_user(&up32->m.userptr, &up->m.userptr,
 					sizeof(compat_long_t)))
 			return -EFAULT;
+=======
+		break;
+	case V4L2_MEMORY_DMABUF:
+		if (copy_in_user(&up32->m.fd, &up->m.fd, sizeof(up->m.fd)))
+			return -EFAULT;
+		break;
+	}
+
+	return 0;
+}
+
+static int bufsize_v4l2_buffer(struct v4l2_buffer32 __user *up, u32 *size)
+{
+	u32 type;
+	u32 length;
+
+	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
+	    get_user(type, &up->type) ||
+	    get_user(length, &up->length))
+		return -EFAULT;
+
+	if (V4L2_TYPE_IS_MULTIPLANAR(type)) {
+		if (length > VIDEO_MAX_PLANES)
+			return -EINVAL;
+>>>>>>> 301b720866073e742fe14febc975d6d2adec05b3
 
 	return 0;
 }
@@ -851,7 +891,6 @@ static long do_video_ioctl(struct file *file, unsigned int cmd, unsigned long ar
 	int compatible_arg = 1;
 	long err = 0;
 
-	memset(&karg, 0, sizeof(karg));
 	/* First, convert the command. */
 	switch (cmd) {
 	case VIDIOC_G_FMT32: cmd = VIDIOC_G_FMT; break;
